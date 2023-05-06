@@ -1,0 +1,38 @@
+syntax = "proto3";
+package api;
+
+service Fields {
+  rpc GetFields(GetFieldsRequest) returns (GetFieldsResponse) {}
+  rpc AddField(AddFieldRequest) returns (AddFieldResponse) {}
+  rpc UpdateField(UpdateFieldRequest) returns (UpdateFieldResponse) {}
+}
+
+message GetFieldsRequest {}
+
+message GetFieldsResponse {
+  repeated Field fields = 1;
+}
+
+message AddFieldRequest {
+  string data_label = 1;
+  string label = 2;
+}
+
+message AddFieldResponse {
+  Field field = 1;
+}
+
+message UpdateFieldRequest {
+  string id = 1;
+  string label = 2;
+}
+
+message UpdateFieldResponse {
+  Field field = 1;
+}
+
+message Field {
+  string id = 1;
+  string data_label = 2;
+  string label = 3;
+}

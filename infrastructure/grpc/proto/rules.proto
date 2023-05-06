@@ -1,0 +1,73 @@
+syntax = "proto3";
+package api;
+
+import "fields.proto";
+
+service Rules {
+  rpc GetRules(GetRulesRequest) returns (GetRulesResponse) {}
+  rpc GetRule(GetRuleRequest) returns (GetRuleResponse) {}
+  rpc AddRule(AddRuleRequest) returns (AddRuleResponse) {}
+  rpc UpdateRule(UpdateRuleRequest) returns (UpdateRuleResponse) {}
+  rpc DeleteRule(DeleteRuleRequest) returns (DeleteRuleResponse) {}
+}
+
+message GetRulesRequest {}
+
+message GetRulesResponse {
+  repeated Rule rules = 1;
+}
+
+message GetRuleRequest {
+  string id = 1;
+}
+
+message GetRuleResponse {
+  Rule rule = 1;
+}
+
+message AddRuleRequest {
+  string field_id = 1;
+  oneof rule_type {
+    Equals equals = 2;
+    Regex regex = 3;
+  }
+}
+
+message AddRuleResponse {
+  Rule rule = 1;
+}
+
+message UpdateRuleRequest {
+  string id = 1;
+  string field_id = 2;
+  oneof rule_type {
+    Equals equals = 3;
+    Regex regex = 4;
+  }
+}
+
+message UpdateRuleResponse {
+  Rule rule = 1;
+}
+
+message DeleteRuleRequest {
+  string id = 1;
+}
+
+message DeleteRuleResponse {}
+
+message Rule {
+  string id = 1;
+  Field field = 2;
+  oneof rule_type {
+    Equals equals = 3;
+    Regex regex = 4;
+  }
+}
+
+message Equals {}
+
+message Regex {
+  string pattern = 1;
+  string replacer = 2;
+}

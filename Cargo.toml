@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "application", "domain", "infrastructure/database", "infrastructure/grpc", "infrastructure/repository", "migration",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+publish = false

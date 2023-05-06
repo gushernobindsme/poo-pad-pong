@@ -1,0 +1,52 @@
+syntax = "proto3";
+package api;
+
+service Objects {
+  rpc GetObjects(GetObjectsRequest) returns (GetObjectsResponse) {}
+  rpc GetObject(GetObjectRequest) returns (GetObjectResponse) {}
+  rpc AddObject(AddObjectRequest) returns (AddObjectResponse) {}
+  rpc UpdateObject(UpdateObjectRequest) returns (UpdateObjectResponse) {}
+  rpc DeleteObject(DeleteObjectRequest) returns (DeleteObjectResponse) {}
+}
+
+message GetObjectsRequest {}
+
+message GetObjectsResponse {
+  repeated Object objects = 1;
+}
+
+message GetObjectRequest {
+  string id = 1;
+}
+
+message GetObjectResponse {
+  Object object = 1;
+}
+
+message AddObjectRequest {
+  map<string, string> attributes = 1;
+}
+
+message AddObjectResponse {
+  Object object = 1;
+}
+
+message UpdateObjectRequest {
+  string id = 1;
+  map<string, string> attributes = 2;
+}
+
+message UpdateObjectResponse {
+  Object object = 1;
+}
+
+message DeleteObjectRequest {
+  string id = 1;
+}
+
+message DeleteObjectResponse {}
+
+message Object {
+  string id = 1;
+  map<string, string> attributes = 2;
+}
