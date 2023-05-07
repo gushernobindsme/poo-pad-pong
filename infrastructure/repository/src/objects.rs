@@ -89,7 +89,7 @@ impl ObjectRepository for ObjectRepositoryImpl {
                         .collect::<Result<Vec<_>, DomainError>>()?;
 
                     // add new related key
-                    if keys.len() > 0 {
+                    if !keys.is_empty() {
                         let client = PostgresKeyCommand::new(txn);
                         client.create_many2(result.id.to_string(), keys).await?;
                     }
@@ -137,7 +137,7 @@ impl ObjectRepository for ObjectRepositoryImpl {
                         })
                         .collect::<Result<Vec<_>, DomainError>>()?;
 
-                    if keys.len() > 0 {
+                    if !keys.is_empty() {
                         let client = PostgresKeyCommand::new(txn);
                         // remove related key
                         for (rule, _) in rules {

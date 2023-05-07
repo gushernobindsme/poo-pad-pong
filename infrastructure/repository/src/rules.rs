@@ -76,7 +76,7 @@ impl RuleRepository for RuleRepositoryImpl {
                         .collect::<Result<Vec<_>, DomainError>>()?;
 
                     // add new related key
-                    if keys.len() > 0 {
+                    if !keys.is_empty() {
                         let client = PostgresKeyCommand::new(txn);
                         client.create_many(rule.id.clone(), keys).await?;
                     }
@@ -128,7 +128,7 @@ impl RuleRepository for RuleRepositoryImpl {
                         })
                         .collect::<Result<Vec<_>, DomainError>>()?;
 
-                    if keys.len() > 0 {
+                    if !keys.is_empty() {
                         let client = PostgresKeyCommand::new(txn);
                         // remove related key
                         client.delete_by_rule_id(id).await?;
