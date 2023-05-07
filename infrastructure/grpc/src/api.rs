@@ -48,8 +48,8 @@ pub struct Field {
 /// Generated client implementations.
 pub mod fields_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
     use tonic::codegen::http::Uri;
+    use tonic::codegen::*;
     #[derive(Debug, Clone)]
     pub struct FieldsClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -93,9 +93,8 @@ pub mod fields_client {
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
         {
             FieldsClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -133,67 +132,53 @@ pub mod fields_client {
         pub async fn get_fields(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFieldsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GetFieldsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::GetFieldsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Fields/GetFields");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Fields", "GetFields"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Fields", "GetFields"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn add_field(
             &mut self,
             request: impl tonic::IntoRequest<super::AddFieldRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::AddFieldResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::AddFieldResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Fields/AddField");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Fields", "AddField"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Fields", "AddField"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn update_field(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFieldRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::UpdateFieldResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::UpdateFieldResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Fields/UpdateField");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Fields", "UpdateField"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Fields", "UpdateField"));
             self.inner.unary(req, path, codec).await
         }
     }
@@ -208,24 +193,15 @@ pub mod fields_server {
         async fn get_fields(
             &self,
             request: tonic::Request<super::GetFieldsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GetFieldsResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::GetFieldsResponse>, tonic::Status>;
         async fn add_field(
             &self,
             request: tonic::Request<super::AddFieldRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::AddFieldResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::AddFieldResponse>, tonic::Status>;
         async fn update_field(
             &self,
             request: tonic::Request<super::UpdateFieldRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::UpdateFieldResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::UpdateFieldResponse>, tonic::Status>;
     }
     #[derive(Debug)]
     pub struct FieldsServer<T: Fields> {
@@ -250,10 +226,7 @@ pub mod fields_server {
                 max_encoding_message_size: None,
             }
         }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> InterceptedService<Self, F>
+        pub fn with_interceptor<F>(inner: T, interceptor: F) -> InterceptedService<Self, F>
         where
             F: tonic::service::Interceptor,
         {
@@ -309,13 +282,9 @@ pub mod fields_server {
                 "/api.Fields/GetFields" => {
                     #[allow(non_camel_case_types)]
                     struct GetFieldsSvc<T: Fields>(pub Arc<T>);
-                    impl<T: Fields> tonic::server::UnaryService<super::GetFieldsRequest>
-                    for GetFieldsSvc<T> {
+                    impl<T: Fields> tonic::server::UnaryService<super::GetFieldsRequest> for GetFieldsSvc<T> {
                         type Response = super::GetFieldsResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::GetFieldsRequest>,
@@ -351,13 +320,9 @@ pub mod fields_server {
                 "/api.Fields/AddField" => {
                     #[allow(non_camel_case_types)]
                     struct AddFieldSvc<T: Fields>(pub Arc<T>);
-                    impl<T: Fields> tonic::server::UnaryService<super::AddFieldRequest>
-                    for AddFieldSvc<T> {
+                    impl<T: Fields> tonic::server::UnaryService<super::AddFieldRequest> for AddFieldSvc<T> {
                         type Response = super::AddFieldResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::AddFieldRequest>,
@@ -393,23 +358,15 @@ pub mod fields_server {
                 "/api.Fields/UpdateField" => {
                     #[allow(non_camel_case_types)]
                     struct UpdateFieldSvc<T: Fields>(pub Arc<T>);
-                    impl<
-                        T: Fields,
-                    > tonic::server::UnaryService<super::UpdateFieldRequest>
-                    for UpdateFieldSvc<T> {
+                    impl<T: Fields> tonic::server::UnaryService<super::UpdateFieldRequest> for UpdateFieldSvc<T> {
                         type Response = super::UpdateFieldResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::UpdateFieldRequest>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                (*inner).update_field(request).await
-                            };
+                            let fut = async move { (*inner).update_field(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -436,18 +393,14 @@ pub mod fields_server {
                     };
                     Box::pin(fut)
                 }
-                _ => {
-                    Box::pin(async move {
-                        Ok(
-                            http::Response::builder()
-                                .status(200)
-                                .header("grpc-status", "12")
-                                .header("content-type", "application/grpc")
-                                .body(empty_body())
-                                .unwrap(),
-                        )
-                    })
-                }
+                _ => Box::pin(async move {
+                    Ok(http::Response::builder()
+                        .status(200)
+                        .header("grpc-status", "12")
+                        .header("content-type", "application/grpc")
+                        .body(empty_body())
+                        .unwrap())
+                }),
             }
         }
     }
@@ -594,8 +547,8 @@ pub struct Regex {
 /// Generated client implementations.
 pub mod rules_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
     use tonic::codegen::http::Uri;
+    use tonic::codegen::*;
     #[derive(Debug, Clone)]
     pub struct RulesClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -639,9 +592,8 @@ pub mod rules_client {
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
         {
             RulesClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -679,111 +631,88 @@ pub mod rules_client {
         pub async fn get_rules(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRulesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GetRulesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::GetRulesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Rules/GetRules");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Rules", "GetRules"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Rules", "GetRules"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn get_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRuleRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GetRuleResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::GetRuleResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Rules/GetRule");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Rules", "GetRule"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Rules", "GetRule"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn add_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::AddRuleRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::AddRuleResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::AddRuleResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Rules/AddRule");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Rules", "AddRule"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Rules", "AddRule"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn update_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRuleRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::UpdateRuleResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::UpdateRuleResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Rules/UpdateRule");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Rules", "UpdateRule"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Rules", "UpdateRule"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn delete_rule(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRuleRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::DeleteRuleResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::DeleteRuleResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Rules/DeleteRule");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Rules", "DeleteRule"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Rules", "DeleteRule"));
             self.inner.unary(req, path, codec).await
         }
     }
@@ -798,10 +727,7 @@ pub mod rules_server {
         async fn get_rules(
             &self,
             request: tonic::Request<super::GetRulesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GetRulesResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::GetRulesResponse>, tonic::Status>;
         async fn get_rule(
             &self,
             request: tonic::Request<super::GetRuleRequest>,
@@ -813,17 +739,11 @@ pub mod rules_server {
         async fn update_rule(
             &self,
             request: tonic::Request<super::UpdateRuleRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::UpdateRuleResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::UpdateRuleResponse>, tonic::Status>;
         async fn delete_rule(
             &self,
             request: tonic::Request<super::DeleteRuleRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::DeleteRuleResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::DeleteRuleResponse>, tonic::Status>;
     }
     #[derive(Debug)]
     pub struct RulesServer<T: Rules> {
@@ -848,10 +768,7 @@ pub mod rules_server {
                 max_encoding_message_size: None,
             }
         }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> InterceptedService<Self, F>
+        pub fn with_interceptor<F>(inner: T, interceptor: F) -> InterceptedService<Self, F>
         where
             F: tonic::service::Interceptor,
         {
@@ -907,13 +824,9 @@ pub mod rules_server {
                 "/api.Rules/GetRules" => {
                     #[allow(non_camel_case_types)]
                     struct GetRulesSvc<T: Rules>(pub Arc<T>);
-                    impl<T: Rules> tonic::server::UnaryService<super::GetRulesRequest>
-                    for GetRulesSvc<T> {
+                    impl<T: Rules> tonic::server::UnaryService<super::GetRulesRequest> for GetRulesSvc<T> {
                         type Response = super::GetRulesResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::GetRulesRequest>,
@@ -949,13 +862,9 @@ pub mod rules_server {
                 "/api.Rules/GetRule" => {
                     #[allow(non_camel_case_types)]
                     struct GetRuleSvc<T: Rules>(pub Arc<T>);
-                    impl<T: Rules> tonic::server::UnaryService<super::GetRuleRequest>
-                    for GetRuleSvc<T> {
+                    impl<T: Rules> tonic::server::UnaryService<super::GetRuleRequest> for GetRuleSvc<T> {
                         type Response = super::GetRuleResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::GetRuleRequest>,
@@ -991,13 +900,9 @@ pub mod rules_server {
                 "/api.Rules/AddRule" => {
                     #[allow(non_camel_case_types)]
                     struct AddRuleSvc<T: Rules>(pub Arc<T>);
-                    impl<T: Rules> tonic::server::UnaryService<super::AddRuleRequest>
-                    for AddRuleSvc<T> {
+                    impl<T: Rules> tonic::server::UnaryService<super::AddRuleRequest> for AddRuleSvc<T> {
                         type Response = super::AddRuleResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::AddRuleRequest>,
@@ -1033,13 +938,9 @@ pub mod rules_server {
                 "/api.Rules/UpdateRule" => {
                     #[allow(non_camel_case_types)]
                     struct UpdateRuleSvc<T: Rules>(pub Arc<T>);
-                    impl<T: Rules> tonic::server::UnaryService<super::UpdateRuleRequest>
-                    for UpdateRuleSvc<T> {
+                    impl<T: Rules> tonic::server::UnaryService<super::UpdateRuleRequest> for UpdateRuleSvc<T> {
                         type Response = super::UpdateRuleResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::UpdateRuleRequest>,
@@ -1075,13 +976,9 @@ pub mod rules_server {
                 "/api.Rules/DeleteRule" => {
                     #[allow(non_camel_case_types)]
                     struct DeleteRuleSvc<T: Rules>(pub Arc<T>);
-                    impl<T: Rules> tonic::server::UnaryService<super::DeleteRuleRequest>
-                    for DeleteRuleSvc<T> {
+                    impl<T: Rules> tonic::server::UnaryService<super::DeleteRuleRequest> for DeleteRuleSvc<T> {
                         type Response = super::DeleteRuleResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::DeleteRuleRequest>,
@@ -1114,18 +1011,14 @@ pub mod rules_server {
                     };
                     Box::pin(fut)
                 }
-                _ => {
-                    Box::pin(async move {
-                        Ok(
-                            http::Response::builder()
-                                .status(200)
-                                .header("grpc-status", "12")
-                                .header("content-type", "application/grpc")
-                                .body(empty_body())
-                                .unwrap(),
-                        )
-                    })
-                }
+                _ => Box::pin(async move {
+                    Ok(http::Response::builder()
+                        .status(200)
+                        .header("grpc-status", "12")
+                        .header("content-type", "application/grpc")
+                        .body(empty_body())
+                        .unwrap())
+                }),
             }
         }
     }
@@ -1180,10 +1073,8 @@ pub struct GetObjectResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddObjectRequest {
     #[prost(map = "string, string", tag = "1")]
-    pub attributes: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
+    pub attributes:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1197,10 +1088,8 @@ pub struct UpdateObjectRequest {
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     #[prost(map = "string, string", tag = "2")]
-    pub attributes: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
+    pub attributes:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1223,16 +1112,14 @@ pub struct Object {
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     #[prost(map = "string, string", tag = "2")]
-    pub attributes: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
+    pub attributes:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Generated client implementations.
 pub mod objects_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
     use tonic::codegen::http::Uri;
+    use tonic::codegen::*;
     #[derive(Debug, Clone)]
     pub struct ObjectsClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1276,9 +1163,8 @@ pub mod objects_client {
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
         {
             ObjectsClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -1316,111 +1202,89 @@ pub mod objects_client {
         pub async fn get_objects(
             &mut self,
             request: impl tonic::IntoRequest<super::GetObjectsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GetObjectsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::GetObjectsResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Objects/GetObjects");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Objects", "GetObjects"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Objects", "GetObjects"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn get_object(
             &mut self,
             request: impl tonic::IntoRequest<super::GetObjectRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GetObjectResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::GetObjectResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Objects/GetObject");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Objects", "GetObject"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Objects", "GetObject"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn add_object(
             &mut self,
             request: impl tonic::IntoRequest<super::AddObjectRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::AddObjectResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::AddObjectResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Objects/AddObject");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Objects", "AddObject"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Objects", "AddObject"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn update_object(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateObjectRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::UpdateObjectResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::UpdateObjectResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Objects/UpdateObject");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Objects", "UpdateObject"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Objects", "UpdateObject"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn delete_object(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteObjectRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::DeleteObjectResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
+        ) -> std::result::Result<tonic::Response<super::DeleteObjectResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/api.Objects/DeleteObject");
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new("api.Objects", "DeleteObject"));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("api.Objects", "DeleteObject"));
             self.inner.unary(req, path, codec).await
         }
     }
@@ -1435,38 +1299,23 @@ pub mod objects_server {
         async fn get_objects(
             &self,
             request: tonic::Request<super::GetObjectsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GetObjectsResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::GetObjectsResponse>, tonic::Status>;
         async fn get_object(
             &self,
             request: tonic::Request<super::GetObjectRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GetObjectResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::GetObjectResponse>, tonic::Status>;
         async fn add_object(
             &self,
             request: tonic::Request<super::AddObjectRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::AddObjectResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::AddObjectResponse>, tonic::Status>;
         async fn update_object(
             &self,
             request: tonic::Request<super::UpdateObjectRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::UpdateObjectResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::UpdateObjectResponse>, tonic::Status>;
         async fn delete_object(
             &self,
             request: tonic::Request<super::DeleteObjectRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::DeleteObjectResponse>,
-            tonic::Status,
-        >;
+        ) -> std::result::Result<tonic::Response<super::DeleteObjectResponse>, tonic::Status>;
     }
     #[derive(Debug)]
     pub struct ObjectsServer<T: Objects> {
@@ -1491,10 +1340,7 @@ pub mod objects_server {
                 max_encoding_message_size: None,
             }
         }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> InterceptedService<Self, F>
+        pub fn with_interceptor<F>(inner: T, interceptor: F) -> InterceptedService<Self, F>
         where
             F: tonic::service::Interceptor,
         {
@@ -1550,15 +1396,9 @@ pub mod objects_server {
                 "/api.Objects/GetObjects" => {
                     #[allow(non_camel_case_types)]
                     struct GetObjectsSvc<T: Objects>(pub Arc<T>);
-                    impl<
-                        T: Objects,
-                    > tonic::server::UnaryService<super::GetObjectsRequest>
-                    for GetObjectsSvc<T> {
+                    impl<T: Objects> tonic::server::UnaryService<super::GetObjectsRequest> for GetObjectsSvc<T> {
                         type Response = super::GetObjectsResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::GetObjectsRequest>,
@@ -1594,13 +1434,9 @@ pub mod objects_server {
                 "/api.Objects/GetObject" => {
                     #[allow(non_camel_case_types)]
                     struct GetObjectSvc<T: Objects>(pub Arc<T>);
-                    impl<T: Objects> tonic::server::UnaryService<super::GetObjectRequest>
-                    for GetObjectSvc<T> {
+                    impl<T: Objects> tonic::server::UnaryService<super::GetObjectRequest> for GetObjectSvc<T> {
                         type Response = super::GetObjectResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::GetObjectRequest>,
@@ -1636,13 +1472,9 @@ pub mod objects_server {
                 "/api.Objects/AddObject" => {
                     #[allow(non_camel_case_types)]
                     struct AddObjectSvc<T: Objects>(pub Arc<T>);
-                    impl<T: Objects> tonic::server::UnaryService<super::AddObjectRequest>
-                    for AddObjectSvc<T> {
+                    impl<T: Objects> tonic::server::UnaryService<super::AddObjectRequest> for AddObjectSvc<T> {
                         type Response = super::AddObjectResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::AddObjectRequest>,
@@ -1678,23 +1510,15 @@ pub mod objects_server {
                 "/api.Objects/UpdateObject" => {
                     #[allow(non_camel_case_types)]
                     struct UpdateObjectSvc<T: Objects>(pub Arc<T>);
-                    impl<
-                        T: Objects,
-                    > tonic::server::UnaryService<super::UpdateObjectRequest>
-                    for UpdateObjectSvc<T> {
+                    impl<T: Objects> tonic::server::UnaryService<super::UpdateObjectRequest> for UpdateObjectSvc<T> {
                         type Response = super::UpdateObjectResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::UpdateObjectRequest>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                (*inner).update_object(request).await
-                            };
+                            let fut = async move { (*inner).update_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1724,23 +1548,15 @@ pub mod objects_server {
                 "/api.Objects/DeleteObject" => {
                     #[allow(non_camel_case_types)]
                     struct DeleteObjectSvc<T: Objects>(pub Arc<T>);
-                    impl<
-                        T: Objects,
-                    > tonic::server::UnaryService<super::DeleteObjectRequest>
-                    for DeleteObjectSvc<T> {
+                    impl<T: Objects> tonic::server::UnaryService<super::DeleteObjectRequest> for DeleteObjectSvc<T> {
                         type Response = super::DeleteObjectResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::DeleteObjectRequest>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                (*inner).delete_object(request).await
-                            };
+                            let fut = async move { (*inner).delete_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1767,18 +1583,14 @@ pub mod objects_server {
                     };
                     Box::pin(fut)
                 }
-                _ => {
-                    Box::pin(async move {
-                        Ok(
-                            http::Response::builder()
-                                .status(200)
-                                .header("grpc-status", "12")
-                                .header("content-type", "application/grpc")
-                                .body(empty_body())
-                                .unwrap(),
-                        )
-                    })
-                }
+                _ => Box::pin(async move {
+                    Ok(http::Response::builder()
+                        .status(200)
+                        .header("grpc-status", "12")
+                        .header("content-type", "application/grpc")
+                        .body(empty_body())
+                        .unwrap())
+                }),
             }
         }
     }
