@@ -1,0 +1,27 @@
+name: Rust
+on: [push]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+      - name: Format Check
+        run: cargo fmt --all --check --message-format human
+      - name: Lint
+        run: cargo clippy --no-deps -- -D warnings
+      - name: Build
+        run: cargo check --workspace --release --all-features
+      - name: Test
+        run: cargo test --workspace --release --all-features -- --nocapture
