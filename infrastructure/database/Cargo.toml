@@ -7,7 +7,6 @@ publish = { workspace = true }
 [dependencies]
 anyhow = "1.0.71"
 chrono = "0.4.24"
-chrono-tz = "0.8.2"
 sea-orm = "0.11.3"
 thiserror = "1.0.40"
 uuid = { version = "1.3.2", features = ["v4", "fast-rng", "macro-diagnostics"] }
