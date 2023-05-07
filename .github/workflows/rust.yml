@@ -17,6 +17,10 @@ jobs:
         with:
           toolchain: stable
           components: rustfmt, clippy
+      - name: Install protoc
+        uses: taiki-e/install-action@v2
+        with:
+          tool: protoc@3.20.3
       - name: Format Check
         run: cargo fmt --all --check --message-format human
       - name: Lint
