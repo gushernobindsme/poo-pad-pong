@@ -66,6 +66,7 @@ impl RuleRepository for RuleRepositoryImpl {
                     let result = client.create(field_id, rule_type).await?;
                     let rule = to_rule(result.0, result.1);
 
+                    // TODO: 件数が多い場合時間がかかるため Pub/Sub を使うようにしたい
                     // generate keys
                     let keys = objects
                         .into_iter()
@@ -119,6 +120,7 @@ impl RuleRepository for RuleRepositoryImpl {
                     let result = client.update(id.clone(), field_id, rule_type).await?;
                     let rule = to_rule(result.0, result.1);
 
+                    // TODO: 件数が多い場合時間がかかるため Pub/Sub を使うようにしたい
                     // generate keys
                     let keys = objects
                         .into_iter()

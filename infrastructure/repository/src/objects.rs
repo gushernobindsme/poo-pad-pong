@@ -78,6 +78,7 @@ impl ObjectRepository for ObjectRepositoryImpl {
                     let object = client.create(json!(attributes)).await?;
                     let result = to_object(object, fields.clone())?;
 
+                    // TODO: 件数が多い場合時間がかかるため Pub/Sub を使うようにしたい
                     // generate keys
                     let keys = rules
                         .into_iter()
@@ -126,6 +127,7 @@ impl ObjectRepository for ObjectRepositoryImpl {
                     let object = client.update(id, json!(attributes)).await?;
                     let result = to_object(object, fields.clone())?;
 
+                    // TODO: 件数が多い場合時間がかかるため Pub/Sub を使うようにしたい
                     // generate keys
                     let keys = rules
                         .clone()
