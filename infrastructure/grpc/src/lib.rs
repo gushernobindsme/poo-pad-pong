@@ -3,6 +3,6 @@ pub mod fields;
 pub mod objects;
 pub mod rules;
 
-pub mod api {
-    tonic::include_proto!("api");
-}
+pub mod api;
+
+pub const API_DESCRIPTOR_SET: &[u8] = tonic::include_file_descriptor_set!("api");

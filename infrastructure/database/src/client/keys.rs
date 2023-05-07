@@ -1,10 +1,11 @@
 use crate::entities::{keys, keys::Entity as Keys};
 use anyhow::Result;
+use chrono::{FixedOffset, Utc};
 use domain::error::DomainError;
 use sea_orm::ActiveValue::Set;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, DatabaseConnection, DatabaseTransaction, EntityTrait,
-    IntoActiveModel, QueryFilter, QueryOrder, TryIntoModel,
+    IntoActiveModel, QueryFilter, QueryOrder,
 };
 
 #[derive(Debug, Clone)]
@@ -59,15 +60,14 @@ impl<'a> PostgresKeyCommand<'a> {
             rule_id: Set(rule_id),
             object_id: Set(object_id),
             key: Set(key),
-            ..Default::default()
+            created_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
+            updated_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
         }
-        .save(self.txn)
+        .insert(self.txn)
         .await
         .map_err(|e| DomainError::Unexpected(e.to_string()))?;
 
-        result
-            .try_into_model()
-            .map_err(|e| DomainError::Unexpected(e.to_string()))
+        Ok(result)
     }
 
     pub async fn create_many(
@@ -75,15 +75,20 @@ impl<'a> PostgresKeyCommand<'a> {
         rule_id: String,
         keys: Vec<(String, String)>, // (object_id, key)
     ) -> Result<(), DomainError> {
-        let keys = keys
-            .into_iter()
-            .map(|(object_id, key)| keys::ActiveModel {
-                rule_id: Set(rule_id.clone()),
-                object_id: Set(object_id),
-                key: Set(key),
-                ..Default::default()
-            })
-            .collect::<Vec<_>>();
+        let keys =
+            keys.into_iter()
+                .map(|(object_id, key)| keys::ActiveModel {
+                    rule_id: Set(rule_id.clone()),
+                    object_id: Set(object_id),
+                    key: Set(key),
+                    created_at: Set(
+                        Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())
+                    ),
+                    updated_at: Set(
+                        Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())
+                    ),
+                })
+                .collect::<Vec<_>>();
 
         let _ = Keys::insert_many(keys)
             .exec(self.txn)
@@ -98,15 +103,20 @@ impl<'a> PostgresKeyCommand<'a> {
         object_id: String,
         keys: Vec<(String, String)>, // (rule_id, key)
     ) -> Result<(), DomainError> {
-        let keys = keys
-            .into_iter()
-            .map(|(rule_id, key)| keys::ActiveModel {
-                rule_id: Set(rule_id),
-                object_id: Set(object_id.clone()),
-                key: Set(key),
-                ..Default::default()
-            })
-            .collect::<Vec<_>>();
+        let keys =
+            keys.into_iter()
+                .map(|(rule_id, key)| keys::ActiveModel {
+                    rule_id: Set(rule_id),
+                    object_id: Set(object_id.clone()),
+                    key: Set(key),
+                    created_at: Set(
+                        Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())
+                    ),
+                    updated_at: Set(
+                        Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())
+                    ),
+                })
+                .collect::<Vec<_>>();
 
         let _ = Keys::insert_many(keys)
             .exec(self.txn)
@@ -132,15 +142,14 @@ impl<'a> PostgresKeyCommand<'a> {
 
         let result = keys::ActiveModel {
             key: Set(key),
+            updated_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
             ..target.into_active_model()
         }
         .update(self.txn)
         .await
         .map_err(|e| DomainError::Unexpected(e.to_string()))?;
 
-        result
-            .try_into_model()
-            .map_err(|e| DomainError::Unexpected(e.to_string()))
+        Ok(result)
     }
 
     pub async fn delete_by_rule_id(&self, rule_id: String) -> Result<(), DomainError> {

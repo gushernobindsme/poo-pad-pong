@@ -1,3 +1,5 @@
+use std::env;
+use std::error::Error;
 use std::path::{Path, PathBuf};
 
 fn collect_protobuf_files(dir: impl AsRef<Path>) -> Vec<PathBuf> {
@@ -12,7 +14,7 @@ fn collect_protobuf_files(dir: impl AsRef<Path>) -> Vec<PathBuf> {
         .collect()
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let proto_root = Path::new("./proto");
     let proto_files = collect_protobuf_files(proto_root);
 
@@ -22,8 +24,14 @@ fn main() {
         println!("cargo:rerun-if-changed={}", file.display());
     }
 
+    let original_out_dir = PathBuf::from(env::var("OUT_DIR")?);
+    let out_dir = "./src";
+
     tonic_build::configure()
-        .build_server(true)
-        .compile(&proto_files, &[proto_root.to_path_buf()])
-        .unwrap_or_else(|e| panic!("protobuf compile error: {}", e));
+        .out_dir(out_dir)
+        .file_descriptor_set_path(original_out_dir.join("api.bin"))
+        // .build_server(true)
+        .compile(&proto_files, &[proto_root.to_path_buf()])?;
+
+    Ok(())
 }

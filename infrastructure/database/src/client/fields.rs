@@ -1,11 +1,13 @@
 use crate::entities::{fields, fields::Entity as Fields};
 use anyhow::Result;
+use chrono::{FixedOffset, Utc};
 use domain::error::DomainError;
 use sea_orm::ActiveValue::Set;
 use sea_orm::{
     ActiveModelTrait, DatabaseConnection, DatabaseTransaction, EntityTrait, IntoActiveModel,
-    QueryOrder, TryIntoModel,
+    QueryOrder,
 };
+use uuid::Uuid;
 
 #[derive(Debug, Clone)]
 pub struct PostgresFieldQuery<'a> {
@@ -49,17 +51,17 @@ impl<'a> PostgresFieldCommand<'a> {
         label: String,
     ) -> Result<fields::Model, DomainError> {
         let result = fields::ActiveModel {
+            id: Set(Uuid::new_v4().to_string()),
             data_label: Set(data_label),
             label: Set(label),
-            ..Default::default()
+            created_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
+            updated_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
         }
-        .save(self.txn)
+        .insert(self.txn)
         .await
         .map_err(|e| DomainError::Unexpected(e.to_string()))?;
 
-        result
-            .try_into_model()
-            .map_err(|e| DomainError::Unexpected(e.to_string()))
+        Ok(result)
     }
 
     pub async fn update(&self, id: String, label: String) -> Result<fields::Model, DomainError> {
@@ -71,15 +73,14 @@ impl<'a> PostgresFieldCommand<'a> {
 
         let result = fields::ActiveModel {
             label: Set(label),
+            updated_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
             ..target.into_active_model()
         }
         .update(self.txn)
         .await
         .map_err(|e| DomainError::Unexpected(e.to_string()))?;
 
-        result
-            .try_into_model()
-            .map_err(|e| DomainError::Unexpected(e.to_string()))
+        Ok(result)
     }
 
     pub async fn delete(&self, id: String) -> Result<(), DomainError> {

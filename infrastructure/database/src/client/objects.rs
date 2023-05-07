@@ -1,12 +1,14 @@
 use crate::entities::{objects, objects::Entity as Objects};
 use anyhow::Result;
+use chrono::{FixedOffset, Utc};
 use domain::error::DomainError;
 use sea_orm::ActiveValue::Set;
 use sea_orm::JsonValue as Json;
 use sea_orm::{
     ActiveModelTrait, DatabaseConnection, DatabaseTransaction, EntityTrait, IntoActiveModel,
-    QueryOrder, TryIntoModel,
+    QueryOrder,
 };
+use uuid::Uuid;
 
 #[derive(Debug, Clone)]
 pub struct PostgresObjectQuery<'a> {
@@ -49,16 +51,16 @@ impl<'a> PostgresObjectCommand<'a> {
 
     pub async fn create(&self, attributes: Json) -> Result<objects::Model, DomainError> {
         let result = objects::ActiveModel {
+            id: Set(Uuid::new_v4().to_string()),
             attributes: Set(attributes),
-            ..Default::default()
+            created_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
+            updated_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
         }
-        .save(self.txn)
+        .insert(self.txn)
         .await
         .map_err(|e| DomainError::Unexpected(e.to_string()))?;
 
-        result
-            .try_into_model()
-            .map_err(|e| DomainError::Unexpected(e.to_string()))
+        Ok(result)
     }
 
     pub async fn update(
@@ -74,15 +76,14 @@ impl<'a> PostgresObjectCommand<'a> {
 
         let result = objects::ActiveModel {
             attributes: Set(attributes),
+            updated_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
             ..target.into_active_model()
         }
         .update(self.txn)
         .await
         .map_err(|e| DomainError::Unexpected(e.to_string()))?;
 
-        result
-            .try_into_model()
-            .map_err(|e| DomainError::Unexpected(e.to_string()))
+        Ok(result)
     }
 
     pub async fn delete(&self, id: String) -> Result<(), DomainError> {

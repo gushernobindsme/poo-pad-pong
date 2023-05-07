@@ -2,7 +2,6 @@
 
 use super::sea_orm_active_enums::GenerationType;
 use sea_orm::entity::prelude::*;
-use sea_orm::ActiveValue::Set;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "rules")]
@@ -44,11 +43,4 @@ impl Related<super::objects::Entity> for Entity {
     }
 }
 
-impl ActiveModelBehavior for ActiveModel {
-    fn new() -> Self {
-        Self {
-            id: Set(Uuid::new_v4().to_string()),
-            ..ActiveModelTrait::default()
-        }
-    }
-}
+impl ActiveModelBehavior for ActiveModel {}

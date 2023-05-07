@@ -2,13 +2,15 @@ use crate::entities::sea_orm_active_enums::GenerationType;
 use crate::entities::{fields, fields::Entity as Fields};
 use crate::entities::{rules, rules::Entity as Rules};
 use anyhow::Result;
+use chrono::{FixedOffset, Utc};
 use domain::error::DomainError;
 use domain::rules::GenerationRule;
 use sea_orm::ActiveValue::Set;
 use sea_orm::{
     ActiveModelTrait, DatabaseConnection, DatabaseTransaction, EntityTrait, IntoActiveModel,
-    ModelTrait, QueryOrder, TryIntoModel,
+    ModelTrait, QueryOrder,
 };
+use uuid::Uuid;
 
 #[derive(Debug, Clone)]
 pub struct PostgresRuleQuery<'a> {
@@ -72,21 +74,20 @@ impl<'a> PostgresRuleCommand<'a> {
     ) -> Result<(rules::Model, fields::Model), DomainError> {
         // create
         let rule_value: RuleValues = rule_type.into();
-        let result = rules::ActiveModel {
+        let rule = rules::ActiveModel {
+            id: Set(Uuid::new_v4().to_string()),
             field_id: Set(field_id),
             r#type: Set(rule_value.r#type),
             regex_pattern: Set(rule_value.regex_pattern),
             regex_replacer: Set(rule_value.regex_replacer),
-            ..Default::default()
+            created_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
+            updated_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
         }
-        .save(self.txn)
+        .insert(self.txn)
         .await
         .map_err(|e| DomainError::Unexpected(e.to_string()))?;
 
         // select related entity
-        let rule = result
-            .try_into_model()
-            .map_err(|e| DomainError::Unexpected(e.to_string()))?;
         let field = rule
             .find_related(Fields)
             .one(self.txn)
@@ -110,11 +111,12 @@ impl<'a> PostgresRuleCommand<'a> {
             .map_err(|e| DomainError::Unexpected(e.to_string()))?
             .ok_or(DomainError::NotFound(field_id.clone()))?;
         let rule_value: RuleValues = rule_type.into();
-        let result = rules::ActiveModel {
+        let rule = rules::ActiveModel {
             field_id: Set(field_id),
             r#type: Set(rule_value.r#type),
             regex_pattern: Set(rule_value.regex_pattern),
             regex_replacer: Set(rule_value.regex_replacer),
+            updated_at: Set(Utc::now().with_timezone(&FixedOffset::east_opt(9 * 3600).unwrap())),
             ..target.into_active_model()
         }
         .update(self.txn)
@@ -122,9 +124,6 @@ impl<'a> PostgresRuleCommand<'a> {
         .map_err(|e| DomainError::Unexpected(e.to_string()))?;
 
         // select related entity
-        let rule = result
-            .try_into_model()
-            .map_err(|e| DomainError::Unexpected(e.to_string()))?;
         let field = rule
             .find_related(Fields)
             .one(self.txn)
