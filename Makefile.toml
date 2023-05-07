@@ -1,0 +1,40 @@
+[config]
+skip_core_tasks = true
+default_to_workspace = false
+
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+__CARGO_FIX_YOLO = 1
+REPOSITORY_ROOT = { script = [
+    "git rev-parse --show-superproject-working-tree --show-toplevel",
+] }
+
+[tasks.lint]
+command = "cargo"
+args = ["clippy", "--", "-D", "warnings"]
+
+[tasks.format]
+command = "cargo"
+args = ["fmt"]
+
+[tasks.fix]
+command = "cargo"
+args = ["clippy", "--no-deps", "--fix", "--allow-dirty", "--allow-staged"]
+
+[tasks.test]
+install_crate = { crate_name = "cargo-nextest" }
+command = "cargo"
+args = ["nextest", "run", "--all-features"]
+
+[tasks.start]
+command = "cargo"
+args = ["run", "--bin", "server"]
+
+[tasks.sort]
+install_crate = { crate_name = "cargo-sort" }
+command = "cargo"
+args = ["sort", "-wg"]
+
+[tasks.udeps]
+install_crate = { crate_name = "cargo-udeps" }
+script = "cargo +nightly udeps --workspace --all-targets --all-features"
