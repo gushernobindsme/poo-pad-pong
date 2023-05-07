@@ -1,6 +1,7 @@
 use crate::error::DomainError;
 use crate::fields::Field;
 use crate::objects::Object;
+use anyhow::Result;
 use async_trait::async_trait;
 use regex::Regex;
 

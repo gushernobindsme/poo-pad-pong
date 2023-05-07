@@ -661,10 +661,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "regex",
- "serde",
- "serde_json",
  "thiserror",
- "uuid",
 ]
 
 [[package]]
@@ -869,7 +866,6 @@ dependencies = [
  "tokio",
  "tonic",
  "tonic-build",
- "uuid",
  "walkdir",
 ]
 
