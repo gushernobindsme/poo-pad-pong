@@ -1,0 +1,53 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity "**fields**" {
+  + ""id"": //character varying [PK]//
+  --
+  *""data_label"": //character varying //
+  *""label"": //character varying //
+  *""created_at"": //timestamp with time zone //
+  *""updated_at"": //timestamp with time zone //
+}
+
+entity "**keys**" {
+  + ""rule_id"": //character varying [PK][FK]//
+  + ""object_id"": //character varying [PK][FK]//
+  --
+  *""key"": //character varying //
+  *""created_at"": //timestamp with time zone //
+  *""updated_at"": //timestamp with time zone //
+}
+
+entity "**objects**" {
+  + ""id"": //character varying [PK]//
+  --
+  *""attributes"": //jsonb //
+  *""created_at"": //timestamp with time zone //
+  *""updated_at"": //timestamp with time zone //
+}
+
+entity "**rules**" {
+  + ""id"": //character varying [PK]//
+  --
+  *""field_id"": //character varying [FK]//
+  *""type"": //generation_type //
+  ""regex_pattern"": //character varying //
+  ""regex_replacer"": //character varying //
+  *""created_at"": //timestamp with time zone //
+  *""updated_at"": //timestamp with time zone //
+}
+
+entity "**seaql_migrations**" {
+  + ""version"": //character varying [PK]//
+  --
+  *""applied_at"": //bigint //
+}
+
+"**keys**"   }--  "**objects**"
+
+"**keys**"   }--  "**rules**"
+
+"**rules**"   }--  "**fields**"
+@enduml
