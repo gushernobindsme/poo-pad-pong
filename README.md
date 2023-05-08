@@ -68,6 +68,6 @@ cargo make test
 
 ![architecture.png](docs/architecture.png)
 
-Created by https://github.com/achiku/planter
+Created by [@achiku/planter](https://github.com/achiku/planter)
 
 ![erd.png](docs/erd.png)
