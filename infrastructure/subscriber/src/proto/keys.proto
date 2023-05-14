@@ -1,0 +1,30 @@
+syntax = "proto3";
+package pubsub_schema;
+
+message SyncKeys {
+  MessageType message_type = 1;
+  oneof payload {
+    CreateKeysRequest create_keys_request = 2;
+    UpdateKeysRequest update_keys_request = 3;
+    DeleteKeysRequest delete_keys_request = 4;
+  }
+}
+
+enum MessageType {
+  INVALID = 0;
+  CREATE_KEYS_REQUEST = 1;
+  UPDATE_KEYS_REQUEST = 2;
+  DELETE_KEYS_REQUEST = 3;
+}
+
+message CreateKeysRequest {
+  string rule_id = 1;
+}
+
+message UpdateKeysRequest {
+  string rule_id = 1;
+}
+
+message DeleteKeysRequest {
+  string rule_id = 1;
+}

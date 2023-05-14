@@ -155,6 +155,7 @@ impl RuleRepository for RuleRepositoryImpl {
                     let client = PostgresRuleCommand::new(txn);
                     client.delete(id.clone()).await?;
 
+                    // TODO: 件数が多い場合時間がかかるため Pub/Sub を使うようにしたい
                     // delete related keys
                     let client = PostgresKeyCommand::new(txn);
                     client.delete_by_rule_id(id).await?;

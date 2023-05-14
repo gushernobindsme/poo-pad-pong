@@ -1,19 +1,19 @@
 [package]
-name = "application"
+name = "server"
 version = { workspace = true }
 edition = { workspace = true }
 publish = { workspace = true }
 
 [[bin]]
 name = "server"
-path = "./src/main.rs"
+path = "src/main.rs"
 
 [dependencies]
 tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
 tonic = "0.9"
 tonic-reflection = "0.9.2"
 
-database = { path = "../infrastructure/database" }
-domain = { path = "../domain" }
-grpc = { path = "../infrastructure/grpc" }
-repository = { path = "../infrastructure/repository" }
+database = { path = "../../infrastructure/database" }
+domain = { path = "../../domain" }
+grpc = { path = "../../infrastructure/grpc" }
+repository = { path = "../../infrastructure/repository" }

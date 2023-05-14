@@ -1,6 +1,13 @@
 [workspace]
 members = [
-    "application", "domain", "infrastructure/database", "infrastructure/grpc", "infrastructure/repository", "migration",
+    "application/server",
+    "application/worker",
+    "domain",
+    "infrastructure/database",
+    "infrastructure/grpc",
+    "infrastructure/repository",
+    "infrastructure/subscriber",
+    "migration",
 ]
 
 [workspace.package]

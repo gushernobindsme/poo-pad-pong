@@ -38,7 +38,13 @@ sea-orm-cli migrate up
 Start gRPC Server:
 
 ```console
-cargo make start
+cargo make start-server
+```
+
+Start Pub/Sub Worker:
+
+```console
+cargo make start-worker
 ```
 
 # Usage

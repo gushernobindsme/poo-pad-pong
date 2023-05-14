@@ -26,9 +26,13 @@ install_crate = { crate_name = "cargo-nextest" }
 command = "cargo"
 args = ["nextest", "run", "--all-features"]
 
-[tasks.start]
+[tasks.start-server]
 command = "cargo"
 args = ["run", "--bin", "server"]
+
+[tasks.start-worker]
+command = "cargo"
+args = ["run", "--bin", "worker"]
 
 [tasks.sort]
 install_crate = { crate_name = "cargo-sort" }

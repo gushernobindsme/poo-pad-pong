@@ -8,3 +8,9 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
+  pubsub:
+    image: messagebird/gcloud-pubsub-emulator:latest
+    ports:
+      - "8681:8681"
+    environment:
+      PUBSUB_PROJECT1: "local-project,poo-pad-pong-topic:poo-pad-pong-subscription"  # projectId,Topic:Subscription
